@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <title>课程查询</title>
+    <style>
+        .center {
+            margin: auto;
+            padding: 30px;
+        }
+            
+        </style>
+</head>
+
+<body style="width: 900px; margin: auto;">
+    <div name="head">
+        <h1 style="text-align: center; padding-top: 40px">北京林业大学</h1>
+        <h3 style="text-align: center">参观指南</h3>
+    </div>
+    <div align="center" name="search_body" border="1">
+        <form action="{{url_for('search')}}" method="post">
+            <div>
+                <input type="text" name="school">
+                <input type="submit" value="名称搜索">
+
+            </div>
+        </form>
+    </div>
+    <div align="center" name="search_body" border="1">
+        <form action="{{url_for('search')}}" method="post">
+            <div>
+                <input type="text" name="school">
+                <input type="submit" value="功能搜索">
+            </div>
+        </form>
+    </div>
+    <div align="center" name="search_body" border="1">
+        <form action="{{url_for('search')}}" method="post">
+            <div>
+                <P>
+                    从
+                    <select>
+                        <option value ="volvo">图书馆</option>
+                        <option value ="saab">二教</option>
+                        <option value="opel">学研大厦</option>
+                    </select>
+                    到
+                    <select>
+                        <option value ="volvo">图书馆</option>
+                        <option value ="saab">二教</option>
+                        <option value="opel">学研大厦</option>
+                    </select>
+                    <input type="submit" value="路径搜索">
+                </P>
+            </div>
+        </form>
+    </div>
+    <div align="center" name="foot">
+        <a href="{{url_for('add')}}">网线铺设</a>
+        <br>
+        <br>
+        <a href="{{url_for('info')}}">管理员登陆</a>
+        <br>
+        <br>
+        <a href="{{url_for('info')}}">关于</a>
+    </div>
+</body>
+
+</html>

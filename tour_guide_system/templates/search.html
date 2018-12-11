@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>搜索结果</title>
+        <style>
+        .center {
+            margin: auto;
+            padding: 30px;
+        }
+            
+        </style>
+    </head>
+    <body>
+        <div name="head">
+            <h1 style="text-align: center">大学课程</h1>
+            <h3 style="text-align: center">搜索结果</h3>
+        </div>
+        <div align="center" name="search_body" border="1">
+
+            <div>
+                {% if class_data %}
+                    <table border="1">
+                        <tr>
+                            <th>学校</th>
+                            <th>课程</th>
+                            <th>时间</th>
+                            <th>-</th>
+                            <th>-</th>
+                        </tr>
+                        {% for class in class_data %}
+                            <form action="{{url_for('operator')}}" method="post">
+                                <tr>
+                                    <td>{{ class[0] }}</td>
+                                    <td>{{ class[1] }}</td>
+                                    <td>{{ class[2] }}</td>
+                                    <td>
+                                        <input name="school" value={{ class[0] }} hidden>
+                                        <input name="class" value={{ class[1] }} hidden>
+                                        <input name="date" value={{ class[2] }} hidden>
+                                        <input type="submit" name="oper" value="修改">
+                                    </td>
+                                    <td><input type="submit" name="oper" value="删除"></td>
+                                </tr>
+                            </form>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <div>
+                        没有数据！
+                    </div>
+                {% endif %}
+            </div>
+
+            <div align="center" style="margin: 10 10 10 10">
+            </div>
+                
+        </div>
+        <div align="center" name="foot">
+            <a href="{{url_for('search')}}">返回</a>
+            <br>
+            <br>
+            <a href="{{url_for('info')}}">关于</a>
+        </div>
+    </body>
+</html>

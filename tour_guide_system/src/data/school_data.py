@@ -54,9 +54,9 @@ class School_data(object):
         self.point_map[id_0][id_1], self.point_map[id_1][id_0] = data['dist']
     
     # 删除一条路径
-    def delete_a_path(self):
+    def delete_a_path(self, data):
         id_0, id_1 = data['0'], data['1']
-        self.point_map[id_0][id_1], self.point_map[id_1][id_0] = 0
+        self.point_map[id_0][id_1], self.point_map[id_1][id_0] = 0, 0
 
 
 class School_spot(object):
