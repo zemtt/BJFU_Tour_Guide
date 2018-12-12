@@ -13,7 +13,7 @@ def index():
 
 # 展示页面
 @app.route('/spot/<i>')
-def item(i):
+def spot(i):
     i = int(i)
     data = {}
     data['name'] = Data.points[i].name
@@ -25,23 +25,30 @@ def item(i):
 def name_search():
     name = request.form['name']
     for each in Data.points:
+        if not each.flag:
+            continue
         if each.name == name:
             i = each.id
+            break
     else:
-        return render_template('warning.html',info=u'没有结果 !', back='#')
+        return render_template('warning.html',info=u'没有结果 !', back='index')
     data = {}
     data['name'] = Data.points[i].name
     data['disc'] = Data.points[i].discription
+    data['func'] = Data.points[i].function
     return render_template('spot.html',data = data)
     
 # 功能搜索页面
 @app.route('/func_search')
 def func_search(i):
-    i = int(i)
-    data = {}
-    data['name'] = Data.points[i].name
-    data['disc'] = Data.points[i].discription
-    return render_template('spot.html',data = data)
+    func = request.form['func']
+    data = []
+    for each in Data.points:
+        if not each.flag:
+            continue
+        if func in each.func:
+            data.append([each.name, each.id])
+    return render_template('func_search.html',data = data)
     
 # 路径搜索页面
 @app.route('/path_search')

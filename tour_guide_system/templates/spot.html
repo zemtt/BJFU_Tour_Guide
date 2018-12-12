@@ -27,9 +27,13 @@
         <img src="test.png" alt="" width="400px">
     </div>
     <div>
-        <h4>功能：学习|借书|喝咖啡</h4>
+        <h4>功能：|
+        {% for f in data.func  %}
+        {{ f }} |
+        {% endfor %}
+        </h4>
     </div>
-    <a href="">返回</a>
+    <a href="{{ url_for('index') }}">返回</a>
 </body>
 
 </html>

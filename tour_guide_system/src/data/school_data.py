@@ -78,7 +78,7 @@ class School_spot(object):
     def __init__(self,id_):
         self.id = id_
         self.name = ''
-        self.function = ''
+        self.function = []
         self.discription = ''
         self.flag = False
 
