@@ -17,16 +17,15 @@
         <h3 style="text-align: center">参观指南</h3>
     </div>
     <div align="center" name="search_body" border="1">
-        <form action="{{url_for('search')}}" method="post">
+        <form action="{{url_for('name_search')}}" method="post">
             <div>
-                <input type="text" name="school">
+                <input type="text" name="name">
                 <input type="submit" value="名称搜索">
-
             </div>
         </form>
     </div>
     <div align="center" name="search_body" border="1">
-        <form action="{{url_for('search')}}" method="post">
+        <form action="{{url_for('func_search')}}" method="post">
             <div>
                 <input type="text" name="school">
                 <input type="submit" value="功能搜索">
@@ -34,7 +33,7 @@
         </form>
     </div>
     <div align="center" name="search_body" border="1">
-        <form action="{{url_for('search')}}" method="post">
+        <form action="{{url_for('path_search')}}" method="post">
             <div>
                 <P>
                     从
@@ -55,10 +54,10 @@
         </form>
     </div>
     <div align="center" name="foot">
-        <a href="{{url_for('add')}}">网线铺设</a>
+        <a href="{{url_for('net_work')}}">网线铺设</a>
         <br>
         <br>
-        <a href="{{url_for('info')}}">管理员登陆</a>
+        <a href="{{url_for('admin_login')}}">管理员登陆</a>
         <br>
         <br>
         <a href="{{url_for('info')}}">关于</a>

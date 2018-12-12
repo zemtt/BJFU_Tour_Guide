@@ -1,4 +1,6 @@
 # coding:utf-8
+from pickle import dump, load
+import copy_reg
 
 class School_data(object):
     def __init__(self):
@@ -7,6 +9,10 @@ class School_data(object):
             for i in range(100)
         ]
         self.points = [School_spot(i) for i in range(100)]
+
+    def save(self):
+        with open('./tour_guide_system/src/data/school.dat', 'wb') as f:
+            dump(self, f)
 
     # 添加一个景点
     def add_a_point(self, data):
@@ -58,6 +64,15 @@ class School_data(object):
         id_0, id_1 = data['0'], data['1']
         self.point_map[id_0][id_1], self.point_map[id_1][id_0] = 0, 0
 
+    def make_a_new_dat_file(self):
+        self.add_a_point(
+            {
+                'name':u'图书馆',
+                'disc':u'Test',
+                'func':['学习', '借书', '咖啡']
+            }
+        )
+        self.save()
 
 class School_spot(object):
     def __init__(self,id_):
@@ -66,3 +81,8 @@ class School_spot(object):
         self.function = ''
         self.discription = ''
         self.flag = False
+
+a = School_data()
+a.make_a_new_dat_file()
+with open('./tour_guide_system/src/data/school.dat', 'rb') as f:
+    Data = load(f)
