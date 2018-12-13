@@ -3,8 +3,12 @@
 from flask import Flask, render_template, request
 from src.data.school_data import School_data, Data
 import json
+from flask_login import UserMixin
+from src.login.User_model import User_data
 
 app = Flask(__name__)
+
+User = User_data()
 
 # 主页
 @app.route('/')
@@ -39,16 +43,16 @@ def name_search():
     return render_template('spot.html',data = data)
     
 # 功能搜索页面
-@app.route('/func_search')
-def func_search(i):
+@app.route('/func_search', methods = ['POST'])
+def func_search():
     func = request.form['func']
     data = []
     for each in Data.points:
         if not each.flag:
             continue
-        if func in each.func:
-            data.append([each.name, each.id])
-    return render_template('func_search.html',data = data)
+        if func in each.function:
+            data.append([each.name, str(each.id)])
+    return render_template('func_result.html', data = data, func = func)
     
 # 路径搜索页面
 @app.route('/path_search')
@@ -61,7 +65,7 @@ def path_search(i):
         
 # 网线铺设页面
 @app.route('/net_work')
-def net_work(i):
+def net_work():
     i = int(i)
     data = {}
     data['name'] = Data.points[i].name
@@ -69,20 +73,27 @@ def net_work(i):
     return render_template('spot.html',data = data)
         
 # 管理员登陆界面
-@app.route('/admin_login')
-def admin_login(i):
-    i = int(i)
-    data = {}
-    data['name'] = Data.points[i].name
-    data['disc'] = Data.points[i].discription
-    return render_template('spot.html',data = data)
-            
+@app.route('/admin_login', methods = ['POST', 'GET'])
+def admin_login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        if request.form['username'] == 'bjfu' and request.form['password'] == 'ilovebjfu':
+            User.login(request.remote_addr)
+            return render_template('warning.html', info = u'登陆成功！', back = 'admin_login')
+        return render_template('warning.html', info = u'账号或密码错误！', back = 'admin_login')
+
 # 关于页面
 @app.route('/info')
-def info(i):
+def info():
     i = int(i)
     data = {}
     data['name'] = Data.points[i].name
     data['disc'] = Data.points[i].discription
     return render_template('spot.html',data = data)
-    
+
+####----------后台-----------####
+@app.route('/admin/list')
+def admin_list():
+    pass
+

@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <title>课程查询</title>
+    <style>
+        .center {
+            margin: auto;
+            padding: 30px;
+        }
+            
+        </style>
+</head>
+
+<body style="width: 900px; margin: auto;">
+    <div name="head">
+        <h1 style="text-align: center; padding-top: 40px">北京林业大学</h1>
+        <h3 style="text-align: center">管理员登陆</h3>
+    </div>
+    <br>
+    <div align="center" name="search_body" border="1">
+        <form action="{{url_for('admin_login')}}" method="post">
+            <div>
+                账号：<input type="text" name="username">
+            </div>
+            <br>
+            <div>
+                密码：<input type="password" name="password">
+            </div>
+            <br>
+            <input type="submit" value="登陆">
+        </form>
+    </div>
+    <div align="center" name="foot">
+        <a href="{{url_for('index')}}">主页</a>
+        <br>
+        <br>
+        <a href="{{url_for('info')}}">关于</a>
+    </div>
+</body>
+
+</html>
