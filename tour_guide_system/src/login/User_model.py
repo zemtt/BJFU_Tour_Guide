@@ -12,5 +12,6 @@ class User_data(object):
     
     def is_login(self, ip):
         if ip == self.login_ip and time.time() - self.login_time < 3600:
+            self.login_time = time.time()
             return True
         return False

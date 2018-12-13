@@ -10,6 +10,10 @@ app = Flask(__name__)
 
 User = User_data()
 
+# check登陆信息
+def Check_login(ip):
+    return User.is_login(ip)
+
 # 主页
 @app.route('/')
 def index():
@@ -95,5 +99,24 @@ def info():
 ####----------后台-----------####
 @app.route('/admin/list')
 def admin_list():
+    if not Check_login(request.remote_addr):
+        return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
     pass
 
+@app.route('/admin/spot/<i>')
+def admin_spot(i):
+    if not Check_login(request.remote_addr):
+        return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
+    pass
+    
+@app.route('/admin/paths')
+def admin_paths():
+    if not Check_login(request.remote_addr):
+        return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
+    pass
+
+@app.route('/admin/path/<i>-<j>')
+def admin_path(i, j):
+    if not Check_login(request.remote_addr):
+        return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
+    pass
