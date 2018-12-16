@@ -1,14 +1,21 @@
 #coding:utf-8
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from src.data.school_data import School_data, Data
 import json
-from flask_login import UserMixin
 from src.login.User_model import User_data
 
 app = Flask(__name__)
 
 User = User_data()
+
+# 获得景点信息的通用函数
+def get_spots():
+    spots_data = []
+    for point in Data.points:
+        if point.flag:
+            spots_data.append([point.name, point.id])
+    return spots_data
 
 # check登陆信息
 def Check_login(ip):
@@ -26,6 +33,8 @@ def spot(i):
     data = {}
     data['name'] = Data.points[i].name
     data['disc'] = Data.points[i].discription
+    data['func'] = Data.points[i].function
+    data['id'] = Data.points[i].id
     return render_template('spot.html',data = data)
 
 # 名称搜索页面
@@ -84,7 +93,7 @@ def admin_login():
     else:
         if request.form['username'] == 'bjfu' and request.form['password'] == 'ilovebjfu':
             User.login(request.remote_addr)
-            return render_template('warning.html', info = u'登陆成功！', back = 'admin_login')
+            return redirect(url_for('admin_list'))
         return render_template('warning.html', info = u'账号或密码错误！', back = 'admin_login')
 
 # 关于页面
@@ -101,13 +110,29 @@ def info():
 def admin_list():
     if not Check_login(request.remote_addr):
         return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
-    pass
-
-@app.route('/admin/spot/<i>')
-def admin_spot(i):
+    spots_data = get_spots()
+    map_data = [
+        [Data.point_map[]]
+    ]
+    return render_template('admin_list.html', spots = spots_data)
+    
+@app.route('/admin/add_spot', methods = ['GET', 'POST'])
+def admin_add_spot():
     if not Check_login(request.remote_addr):
         return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
-    pass
+    if request.method == 'GET':
+        return render_template('add_spot.html')
+    else:
+        spot_data = {}
+        spot_data['name'] = request.form['name']
+        spot_data['disc'] = request.form['disc']
+        spot_data['func'] = request.form['func'].split('、')
+        p_id = Data.add_a_point(spot_data)
+        if p_id == -1:
+            return render_template('warning.html', info = u'此地点已经存在！', back = 'admin_list')
+        f = request.files['pic']
+        f.save('./tour_guide_system/static/{}.png'.format(p_id))
+        return render_template('warning.html', info = u'添加成功！', back = 'admin_list')
     
 @app.route('/admin/paths')
 def admin_paths():

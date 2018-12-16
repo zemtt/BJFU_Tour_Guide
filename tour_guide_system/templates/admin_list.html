@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <title>搜索结果</title>
+    <style>
+        .center {
+            margin: auto;
+            padding: 30px;
+        }
+            
+        </style>
+</head>
+
+<body style="width: 900px; margin: auto;">
+    <div name="head">
+        <h1 style="text-align: center; padding-top: 40px">北京林业大学</h1>
+        <h3 style="text-align: center">景点管理系统 </h3>
+    </div>
+    <div align="center" name="search_body" border="1">
+
+        <div>
+            <h4>景点</h4>
+            <table border="1" style="text-align: center">
+                <tr>
+                    <th style="width:200px;">景点名称</th>
+                    <th>-</th>
+                </tr>
+                {% for spot in spots%}
+                <tr>
+                    <td>
+                        {{ spot[0] }}
+                    </td>
+                    <td><a href=""><button>点击编辑</button></a></td>
+                </tr>
+                </form>
+                {% endfor %}
+            </table>
+            <h4><a href="{{ url_for('admin_add_spot') }}"><button>添加新景点</button></a></h4>
+        </div>
+
+        <div>
+            <h4>路径</h4>
+            <table border="1" style="text-align: center">
+                <tr>
+                    <th>-</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <td>-</td>
+                    <td>
+                        800米
+                        <br>
+                        <a href="">删除</a>
+                    </td>
+                    <td>无</td>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <td>
+                        800米
+                        <br>
+                        <a href="">删除</a>
+                    </td>
+                    <td>-</td>
+                    <td>
+                        600米
+                        <br>
+                        <a href="">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <td>
+                        800米
+                        <br>
+                        <a href="">删除</a>
+                    </td>
+                    <td>-</td>
+                    <td>
+                        600米
+                        <br>
+                        <a href="">删除</a>
+                    </td>
+                </tr>
+            </table>
+            <h4>添加新路径</h4>
+            <form action="">
+                从
+                <select name="" id="">
+                    <option value ="volvo">图书馆</option>
+                    <option value ="saab">二教</option>
+                    <option value="opel">学研大厦</option>
+                </select>
+                到
+                <select name="" id="">
+                    <option value ="volvo">图书馆</option>
+                    <option value ="saab">二教</option>
+                    <option value="opel">学研大厦</option>
+                </select>
+                <br>
+                <br>
+                距离
+                <input type="text" name="" id="">
+                米
+                <br>
+                <br>
+                <input type="submit" value="提交">
+            </form>
+        </div>
+
+
+        <div align="center" style="margin: 10 10 10 10">
+        </div>
+
+    </div>
+    <div align="center" name="foot">
+        <a href="{{url_for('info')}}">关于</a>
+    </div>
+</body>
+
+</html>
