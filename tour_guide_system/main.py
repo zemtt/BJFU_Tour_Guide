@@ -112,9 +112,12 @@ def admin_list():
         return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
     spots_data = get_spots()
     map_data = [
-        [Data.point_map[]]
+        [[Data.point_map[spot_1[1]][spot_2[1]], spot_1[1], spot_2[1]]
+            for spot_2 in spots_data
+        ]
+        for spot_1 in spots_data
     ]
-    return render_template('admin_list.html', spots = spots_data)
+    return render_template('admin_list.html', spots = spots_data, mapt = map_data, count = range(1,len(spots_data)+1))
     
 @app.route('/admin/add_spot', methods = ['GET', 'POST'])
 def admin_add_spot():
@@ -134,11 +137,20 @@ def admin_add_spot():
         f.save('./tour_guide_system/static/{}.png'.format(p_id))
         return render_template('warning.html', info = u'添加成功！', back = 'admin_list')
     
-@app.route('/admin/paths')
-def admin_paths():
+@app.route('/admin/add_paths', methods = ['POST'])
+def admin_add_paths():
     if not Check_login(request.remote_addr):
         return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
-    pass
+    while 1:
+        data = {}
+        data['0'], data['1'] = int(request.form['spot1']), int(request.form['spot2'])
+        data['dist'] = int(request.form['dist'])
+        if data['0'] == data['1']:
+            raise
+        Data.add_a_path(data)
+        return render_template('warning.html', info = u'添加成功！', back = 'admin_list')
+    #except:
+    #    return render_template('warning.html', info = u'添加失败，请检查输入格式', back = 'admin_list')
 
 @app.route('/admin/path/<i>-<j>')
 def admin_path(i, j):

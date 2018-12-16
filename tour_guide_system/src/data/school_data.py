@@ -6,7 +6,7 @@ class School_data(object):
     def __init__(self):
         self.point_map = [
             [-1 for i in range(100)]
-            for i in range(100)
+            for j in range(100)
         ]
         self.points = [School_spot(i) for i in range(100)]
 
@@ -63,7 +63,7 @@ class School_data(object):
     # 添加一条路径
     def add_a_path(self, data):
         id_0, id_1 = data['0'], data['1']
-        self.point_map[id_0][id_1], self.point_map[id_1][id_0] = data['dist']
+        self.point_map[id_0][id_1], self.point_map[id_1][id_0] = data['dist'], data['dist']
         self.save()
     
     # 删除一条路径

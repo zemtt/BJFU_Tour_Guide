@@ -22,13 +22,17 @@
             <h4>景点</h4>
             <table border="1" style="text-align: center">
                 <tr>
+                    <th>ID</th>
                     <th style="width:200px;">景点名称</th>
                     <th>-</th>
                 </tr>
-                {% for spot in spots%}
+                {% for i in count%}
                 <tr>
                     <td>
-                        {{ spot[0] }}
+                        {{i}}
+                    </td>
+                    <td>
+                        {{ spots[i-1][0] }}
                     </td>
                     <td><a href=""><button>点击编辑</button></a></td>
                 </tr>
@@ -43,67 +47,45 @@
             <table border="1" style="text-align: center">
                 <tr>
                     <th>-</th>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
+                    {% for i in count %}
+                    <th>{{spots[i-1][0]}}</th>
+                    {% endfor %}
                 </tr>
+                {% for j in count %}
                 <tr>
-                    <th>1</th>
-                    <td>-</td>
-                    <td>
-                        800米
-                        <br>
-                        <a href="">删除</a>
-                    </td>
-                    <td>无</td>
+                    <th>{{spots[j-1][0]}}</th>
+                    {% for k in count %}
+                        {% if mapt[j-1][k-1][0] == -1 %}
+                        <td>-</td>
+                        {% else %}
+                        <td>
+                            {{ mapt[j-1][k-1][0] }}米
+                            <br>
+                            <a href="">删除</a>
+                        </td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
-                <tr>
-                    <th>2</th>
-                    <td>
-                        800米
-                        <br>
-                        <a href="">删除</a>
-                    </td>
-                    <td>-</td>
-                    <td>
-                        600米
-                        <br>
-                        <a href="">删除</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>2</th>
-                    <td>
-                        800米
-                        <br>
-                        <a href="">删除</a>
-                    </td>
-                    <td>-</td>
-                    <td>
-                        600米
-                        <br>
-                        <a href="">删除</a>
-                    </td>
-                </tr>
+                {% endfor %}
             </table>
             <h4>添加新路径</h4>
-            <form action="">
+            <form action="{{ url_for('admin_add_paths') }}" method="post">
                 从
-                <select name="" id="">
-                    <option value ="volvo">图书馆</option>
-                    <option value ="saab">二教</option>
-                    <option value="opel">学研大厦</option>
+                <select name="spot1" id="">
+                    {% for spot in spots %}
+                    <option value="{{spot[1]}}">{{spot[0]}}</option>
+                    {% endfor %}
                 </select>
                 到
-                <select name="" id="">
-                    <option value ="volvo">图书馆</option>
-                    <option value ="saab">二教</option>
-                    <option value="opel">学研大厦</option>
+                <select name="spot2" id="">
+                    {% for spot in spots %}
+                    <option value="{{spot[1]}}">{{spot[0]}}</option>
+                    {% endfor %}
                 </select>
                 <br>
                 <br>
                 距离
-                <input type="text" name="" id="">
+                <input type="text" name="dist" id="">
                 米
                 <br>
                 <br>
