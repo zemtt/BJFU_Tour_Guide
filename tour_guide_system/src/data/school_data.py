@@ -1,6 +1,6 @@
 # coding:utf-8
 from pickle import dump, load
-import copy_reg
+#import copy_reg
 
 class School_data(object):
     def __init__(self):
