@@ -1,6 +1,6 @@
 # coding:utf-8
 from pickle import dump, load
-#import copy_reg
+import copy_reg
 
 class School_data(object):
     def __init__(self):
@@ -33,22 +33,22 @@ class School_data(object):
     
     # 修改一个景点
     def modify_a_point(self, data):
-        point = self.points[data['id_']]
+        point = self.points[data['id']]
         point.name, point.discription, point.function =  (
             data['name'],
             data['disc'],
-            data['function']
+            data['func']
         )
         self.save()
     
     # 删除一个景点
     def delete_a_point(self, data):
         # 删除点信息
-        point = self.points[data['id_']]
+        point = self.points[data['id']]
         point.flag = False
         # 删除边信息
         for i in range(100):
-            self.point_map[i][data['id_']], self.point_map[data['id_']][i] = 0, 0
+            self.point_map[i][data['id']], self.point_map[data['id']][i] = -1, -1
         self.save()
 
     # 查找一个景点

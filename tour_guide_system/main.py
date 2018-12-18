@@ -49,11 +49,7 @@ def name_search():
             break
     else:
         return render_template('warning.html',info=u'没有结果 !', back='index')
-    data = {}
-    data['name'] = Data.points[i].name
-    data['disc'] = Data.points[i].discription
-    data['func'] = Data.points[i].function
-    return render_template('spot.html',data = data)
+    return redirect(url_for('spot', i=i))
     
 # 功能搜索页面
 @app.route('/func_search', methods = ['POST'])
@@ -91,7 +87,7 @@ def admin_login():
     if request.method == 'GET':
         return render_template('login.html')
     else:
-        if request.form['username'] == 'bjfu' and request.form['password'] == 'ilovebjfu':
+        if request.form['username'] == 'bjfu' and request.form['password'] == 'bjfu':
             User.login(request.remote_addr)
             return redirect(url_for('admin_list'))
         return render_template('warning.html', info = u'账号或密码错误！', back = 'admin_login')
@@ -136,24 +132,63 @@ def admin_add_spot():
         f = request.files['pic']
         f.save('./tour_guide_system/static/{}.png'.format(p_id))
         return render_template('warning.html', info = u'添加成功！', back = 'admin_list')
-    
+
+@app.route('/admin/adjust_spot/<i>', methods = ['GET', 'POST'])
+def admin_adjust_spot(i):
+    if not Check_login(request.remote_addr):
+        return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
+    if request.method == 'GET':
+        i = int(i)
+        data = {}
+        data['name'] = Data.points[i].name
+        data['disc'] = Data.points[i].discription
+        data['func'] = ''
+        for each in Data.points[i].function:
+            data['func'] += each+u'、'
+        data['func'] = data['func'][:-1]
+        data['id'] = Data.points[i].id
+        return render_template('adjust_spot.html', old_data = data)
+    else:
+        spot_data = {}
+        spot_data['name'] = request.form['name']
+        spot_data['disc'] = request.form['disc']
+        spot_data['func'] = request.form['func'].split('、')
+        spot_data['id'] = int(i)
+        Data.modify_a_point(spot_data)
+        f = request.files['pic']
+        if f:
+            f.save('./tour_guide_system/static/{}.png'.format(p_id))
+        return render_template('warning.html', info = u'修改成功！', back = 'admin_list')
+
+@app.route('/admin/delete_spot/<i>')
+def admin_delete_spot(i):
+    if not Check_login(request.remote_addr):
+        return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
+    data = {}
+    data['id'] = int(i)
+    Data.delete_a_point(data)
+    return render_template('warning.html', info = u'删除成功！', back = 'admin_list')
+
 @app.route('/admin/add_paths', methods = ['POST'])
 def admin_add_paths():
     if not Check_login(request.remote_addr):
         return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
-    while 1:
+    try:
         data = {}
         data['0'], data['1'] = int(request.form['spot1']), int(request.form['spot2'])
         data['dist'] = int(request.form['dist'])
         if data['0'] == data['1']:
-            raise
+            raise KeyboardInterrupt
         Data.add_a_path(data)
         return render_template('warning.html', info = u'添加成功！', back = 'admin_list')
-    #except:
-    #    return render_template('warning.html', info = u'添加失败，请检查输入格式', back = 'admin_list')
+    except:
+       return render_template('warning.html', info = u'添加失败，请检查输入格式', back = 'admin_list')
 
-@app.route('/admin/path/<i>-<j>')
-def admin_path(i, j):
+@app.route('/admin/delet_path/<i>-<j>')
+def admin_delete_path(i, j):
     if not Check_login(request.remote_addr):
         return render_template('warning.html', info = u'请登陆管理员账号之后再操作！', back = 'admin_login')
-    pass
+    data = {}
+    data['0'], data['1'] = int(i), int(j)
+    Data.delete_a_path(data)
+    return render_template('warning.html', info = u'删除成功！', back = 'admin_list')

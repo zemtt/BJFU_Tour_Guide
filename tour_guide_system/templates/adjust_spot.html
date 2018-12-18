@@ -14,26 +14,26 @@
 <body style="width: 900px; margin: auto;">
     <div name="head">
         <h1 style="text-align: center; padding-top: 40px">北京林业大学</h1>
-        <h3 style="text-align: center">景点添加</h3>
+        <h3 style="text-align: center">景点信息修改</h3>
     </div>
     <div align="center" name="search_body" border="1">
 
         <div>
-            <form action="{{url_for('admin_add_spot')}}" method="post" enctype="multipart/form-data">
+            <form action="{{url_for('admin_adjust_spot', i=old_data['id'])}}" method="post" enctype="multipart/form-data">
                 <p>
                     名称：</p>
                 <p>
-                    <input type="text" name="name" id="">
+                    <input type="text" name="name" id="" value="{{ old_data['name'] }}">
                 </p>
                 <p>
                     描述：</p>
                 <p>
-                    <textarea name="disc" id="disc" cols="30" rows="10"></textarea>
+                    <textarea name="disc" id="disc" cols="30" rows="10">{{ old_data['disc'] }}</textarea>
                 </p>
                 <p>
                     功能：</p>
                 <p>
-                    <input type="text" name="func" id="">
+                    <input type="text" name="func" id="" value="{{ old_data['func'] }}">
                 </p>
                 <p>多个功能用“、”分隔</p>
                 <p>照片：</p>
@@ -52,6 +52,8 @@
 
     </div>
     <div align="center" name="foot">
+        <a href="{{url_for('admin_list')}}">返回</a>
+        <br><br>
         <a href="{{url_for('info')}}">关于</a>
     </div>
 </body>
