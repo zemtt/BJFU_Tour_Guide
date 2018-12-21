@@ -1,5 +1,6 @@
 # coding:utf-8
 import random
+MAX = 1000000
 ERROR = 1
 OK = 0
 
@@ -45,19 +46,24 @@ class School_data(object):
         line_count = 1
         for i in range(spot_count):
             data = {}
-            data['name'] = text[line_count][:-1]
-            data['disc'] = text[line_count+1][:-1]
-            data['func'] = text[line_count+2][:-1]
+            data['name'] = text[line_count].strip()
+            data['disc'] = text[line_count+1].strip()
+            data['func'] = text[line_count+2].strip()
             self.add_a_spot(data)
             line_count += 3
         for i in range(path_count):
             data = {}
-            name_0, name_1, lenth = text[line_count][:-1].split(' ')
+            name_0, name_1, lenth = text[line_count].strip().split(' ')
             lenth = int(lenth)
             data['id_0'], data['id_1'] = self.locate(name_0), self.locate(name_1)
             data['dist'] = lenth
             self.add_a_path(data)
             line_count+=1
+    
+    def get_dist(self, id_0, id_1):
+        if id_1 in self.spots[id_0].paths:
+            return self.spots[id_0].paths[id_1]
+        return MAX
 
     def add_a_spot(self, data):
         """

@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from src.data.data import School_data, MyData
 import json
 from src.login.User_model import User_data
+from tour_guide_system.src.algorithm import Dijkstra, CountAllPath, KMP_in
 
 app = Flask(__name__)
 
@@ -50,25 +51,21 @@ def func_search():
     func = request.form['func']
     data = []
     for each in MyData.spots.values():
-        if func in each.func:
+        if KMP_in(each.func.decode(), func):
             data.append([each.name, str(each.id)])
     return render_template('func_result.html', data = data, func = func)
     
 # 路径搜索页面
-@app.route('/path_search')
+@app.route('/path_search', methods = ['POST'])
 def path_search():
-    data = {}
-    data['name'] = MyData.spots[i].name
-    data['disc'] = MyData.spots[i].discription
-    return render_template('spot.html',data = data)
+    i, j = request.form['i'], request.form['j']
+    Min_path = Dijkstra(MyData.spots, i, j, MyData.get_dist)
+    All_paths = CountAllPath(MyData.spots, i, j)
+    return render_template('paths.html', spots = MyData.spots, Min_path = Min_path, All_paths = All_paths, i=i, j=j)
         
 # 网线铺设页面
 @app.route('/net_work')
 def net_work():
-    i = int(i)
-    data = {}
-    data['name'] = MyData.spots[i].name
-    data['disc'] = MyData.spots[i].discription
     return render_template('spot.html',data = data)
         
 # 管理员登陆界面
@@ -85,11 +82,7 @@ def admin_login():
 # 关于页面
 @app.route('/info')
 def info():
-    i = int(i)
-    data = {}
-    data['name'] = MyData.spots[i].name
-    data['disc'] = MyData.spots[i].discription
-    return render_template('spot.html',data = data)
+    return '<h1>:-)</h1>'
 
 ####----------后台-----------####
 @app.route('/admin/list')
@@ -109,12 +102,15 @@ def admin_add_spot():
         spot_data = {}
         spot_data['name'] = request.form['name']
         spot_data['disc'] = request.form['disc']
-        spot_data['func'] = request.form['func'].split('、')
+        spot_data['func'] = request.form['func']
         p_id = MyData.add_a_spot(spot_data)
         if p_id == -1:
             return render_template('warning.html', info = u'此地点已经存在！', back = 'admin_list')
-        f = request.files['pic']
-        f.save('./tour_guide_system/static/{}.png'.format(p_id))
+        try:
+            f = request.files['pic']
+            f.save(u'./tour_guide_system/static/{}.png'.format(spot_data['name']))
+        except:
+            pass
         return render_template('warning.html', info = u'添加成功！', back = 'admin_list')
 
 @app.route('/admin/adjust_spot/<i>', methods = ['GET', 'POST'])
@@ -136,9 +132,11 @@ def admin_adjust_spot(i):
         spot_data['func'] = request.form['func']
         spot_data['id'] = i
         MyData.modify_a_spot(spot_data)
-        f = request.files['pic']
-        if f:
-            f.save('./tour_guide_system/static/{}.png'.format(p_id))
+        try:
+            f = request.files['pic']
+            f.save(u'./tour_guide_system/static/{}.png'.format(spot_data['name']))
+        except:
+            pass
         return render_template('warning.html', info = u'修改成功！', back = 'admin_list')
 
 @app.route('/admin/delete_spot/<i>')

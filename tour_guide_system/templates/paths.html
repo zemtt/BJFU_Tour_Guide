@@ -14,36 +14,29 @@
 <body style="width: 900px; margin: auto;">
     <div name="head">
         <h1 style="text-align: center; padding-top: 40px">北京林业大学</h1>
-        <h3 style="text-align: center">参观指南</h3>
+        <h3 style="text-align: center">路径查询</h3>
     </div>
     <div align="center" name="search_body" border="1">
-        <h4>景点</h4>
-        <table border="1" style="text-align: center">
-            <tr>
-                <th style="width:200px;">景点名称</th>
-                <th>-</th>
-            </tr>
-            {% for spot in spots %}
-            <tr>
-                <td>
-                    {{ spot.name }}
-                </td>
-                <td>
-                    <a href="{{ url_for('spot', i = spot.id) }}"><button>点击查看</button></a>
-                </td>
-            </tr>
-            </form>
-            {% endfor %}
-        </table>
+        <h4>从【{{ spots[i].name }}】到【{{ spots[j].name }}】</h4>
+        <h3>最短路径</h3>
+        <h4>
+            {%for spot in Min_path[1]%}
+            {{spots[spot].name}}
+            {%endfor%}
+            {{Min_path[0]}}
+            </h4>
+        <h3>全部路径</h3>
+        {%for path in All_paths%}
+        <p>
+            {%for spot in path[0]%}
+            {{spots[spot].name}}
+            {%endfor%}
+            {{path[1]}}
+        </p>
+        {%endfor%}
         <br>
     </div>
     <div align="center" name="search_body" border="1">
-        <form action="{{url_for('func_search')}}" method="post">
-            <div>
-                <input type="text" name="func">
-                <input type="submit" value="功能搜索">
-            </div>
-        </form>
     </div>
     <div align="center" name="search_body" border="1">
         <form action="{{url_for('path_search')}}" method="post">
@@ -51,29 +44,25 @@
                 <P>
                     从
                     <select name="i">
-                        {% for spot in spots %}
+                        {% for spot in spots.values() %}
                         <option value="{{spot.id}}">{{ spot.name }}</option>
                         {% endfor %}
                     </select>
                     到
                     <select name="j">
-                        {% for spot in spots %}
+                        {% for spot in spots.values() %}
                         <option value="{{spot.id}}">{{ spot.name }}</option>
                         {% endfor %}
                     </select>
-                    <input type="submit" value="路径搜索">
+                    <input type="submit" value="继续搜索">
                 </P>
             </div>
         </form>
     </div>
     <div align="center" name="foot">
-        <a href="{{url_for('net_work')}}">网线铺设</a>
         <br>
         <br>
-        <a href="{{url_for('admin_login')}}">管理员登陆</a>
-        <br>
-        <br>
-        <a href="{{url_for('info')}}">关于</a>
+        <a href="{{url_for('index')}}">返回</a>
     </div>
 </body>
 

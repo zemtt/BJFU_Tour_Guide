@@ -66,7 +66,7 @@
                 </tr>
                 {% endfor %}
             </table>
-            <h4>添加新路径</h4>
+            <h4>添加或修改路径</h4>
             <form action="{{ url_for('admin_add_paths') }}" method="post">
                 从
                 <select name="spot1" id="">
@@ -97,6 +97,8 @@
 
     </div>
     <div align="center" name="foot">
+        <a href="{{url_for('index')}}">主页</a>
+        <br><br>
         <a href="{{url_for('info')}}">关于</a>
     </div>
 </body>
