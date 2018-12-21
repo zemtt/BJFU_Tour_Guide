@@ -66,7 +66,7 @@ def path_search():
 # 网线铺设页面
 @app.route('/net_work')
 def net_work():
-    return render_template('spot.html',data = data)
+    return render_template('spot.html')
         
 # 管理员登陆界面
 @app.route('/admin_login', methods = ['POST', 'GET'])
