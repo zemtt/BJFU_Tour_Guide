@@ -2,7 +2,8 @@
 
 def KMP_in(str_1, str_2):
     """
-    KMP算法，串模式匹配实现根据景点功能查询
+    功能：
+    用KMP算法，串模式匹配实现根据景点功能查询
     """
     def kmp_match(s, p):
         m, n, cur = len(s), len(p), 0
@@ -26,11 +27,61 @@ def KMP_in(str_1, str_2):
     
     return kmp_match(str_1, str_2)
 
-def Kruskal():
+def Kruskal(spots):
     """
-    实现最小生成树构造
+    功能：
+    用克鲁斯卡尔实现最小生成树构造，其中Edge_set用堆排序
+    返回值：
+    一个List包含最小生成树的所有边
     """
-    pass
+
+    Edges_set, result = [], []
+    rest_spots = spots.keys()
+    for spot in spots.keys():
+        rest_spots.remove(spot)
+        for path in spots[spot].paths:
+            if path in rest_spots:
+                Edges_set.append([spots[spot].paths[path], spot, path])
+    Edges_set = Heap_sort(Edges_set)
+    Vexset = { spots.keys()[i]:i for i in range(len(spots.keys())) }
+
+    for edge in Edges_set:
+        vex_1, vex_2 = Vexset[edge[1]], Vexset[edge[2]]
+        if vex_1 == vex_2:
+            continue
+        result.append(edge)
+        for each in Vexset:
+            if Vexset[each] == vex_1:
+                Vexset[each] = vex_2
+    
+    return result
+
+def Heap_sort(edges):
+    def Creat_a_heap():
+        for i in range((len(edges)-1)/2, 0, -1):
+            Heap_adjust(i, len(edges)-1)
+    
+    def Heap_adjust(s, m):
+        rc = edges[s]
+        j = 2*s
+        while(j<m):
+            if(j<m and edges[j][0]<edges[j+1][0]):
+                j+=1
+            if(rc[0]>edges[j][0]):
+                break
+            edges[s] = edges[j]
+            s = j
+            j*=2
+        edges[s] = rc
+    
+    edges = [[0,0,0]]+edges
+    Creat_a_heap()
+    for i in range(len(edges)-1, 1, -1):
+        edges[1], edges[i] = edges[i], edges[1]
+        Heap_adjust(1,i-1)
+    if edges[1][0] > edges[2][0]:
+        edges[1], edges[2] = edges[2], edges[1]
+    return edges[1:]
 
 # 迪杰斯特拉查找最短路径
 def Dijkstra(spots, start, end, get_dist):

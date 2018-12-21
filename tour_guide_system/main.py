@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from src.data.data import School_data, MyData
 import json
 from src.login.User_model import User_data
-from tour_guide_system.src.algorithm import Dijkstra, CountAllPath, KMP_in
+from tour_guide_system.src.algorithm import Dijkstra, CountAllPath, KMP_in, Kruskal
 
 app = Flask(__name__)
 
@@ -66,7 +66,11 @@ def path_search():
 # 网线铺设页面
 @app.route('/net_work')
 def net_work():
-    return render_template('spot.html')
+    result = Kruskal(MyData.spots)
+    lenth = 0
+    for each in result:
+        lenth += each[0]
+    return render_template('net_work.html', paths = result, spots = MyData.spots, lenth = lenth)
         
 # 管理员登陆界面
 @app.route('/admin_login', methods = ['POST', 'GET'])

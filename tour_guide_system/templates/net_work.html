@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <title>课程查询</title>
+    <style>
+        .center {
+            margin: auto;
+            padding: 30px;
+        }
+            
+        </style>
+</head>
+
+<body style="width: 900px; margin: auto;">
+    <div name="head">
+        <h1 style="text-align: center; padding-top: 40px">北京林业大学</h1>
+        <h3 style="text-align: center">网线铺设最小生成树</h3>
+    </div>
+    <div align="center" name="search_body" border="1">
+        <h4>所有路径</h4>
+        {%for each in paths%}
+        <h4>
+            {{spots[each[1]].name}}
+            ----
+            {{spots[each[2]].name}}
+            {{each[0]}}
+            米
+        </h4>
+        {%endfor%}
+        <br>
+        <h3>总共长{{lenth}}米</h3>
+    </div>
+    <div align="center" name="foot">
+        <br>
+        <br>
+        <a href="{{url_for('index')}}">返回</a>
+    </div>
+</body>
+
+</html>
