@@ -22,21 +22,17 @@
             <h4>景点</h4>
             <table border="1" style="text-align: center">
                 <tr>
-                    <th>ID</th>
                     <th style="width:200px;">景点名称</th>
                     <th>-</th>
                     <th>-</th>
                 </tr>
-                {% for i in count%}
+                {% for spot in spots%}
                 <tr>
                     <td>
-                        {{i}}
+                        {{ spot.name }}
                     </td>
-                    <td>
-                        {{ spots[i-1][0] }}
-                    </td>
-                    <td><a href="{{ url_for('admin_adjust_spot', i=spots[i-1][1]) }}"><button>点击编辑</button></a></td>
-                    <td><a href="{{ url_for('admin_delete_spot', i=spots[i-1][1]) }}"><button>点击删除</button></a></td>
+                    <td><a href="{{ url_for('admin_adjust_spot', i=spot.id) }}"><button>点击编辑</button></a></td>
+                    <td><a href="{{ url_for('admin_delete_spot', i=spot.id) }}"><button>点击删除</button></a></td>
                 </tr>
                 </form>
                 {% endfor %}
@@ -49,21 +45,21 @@
             <table border="1" style="text-align: center">
                 <tr>
                     <th>-</th>
-                    {% for i in count %}
-                    <th>{{spots[i-1][0]}}</th>
+                    {% for spot_1 in spots %}
+                    <th>{{spot_1.name}}</th>
                     {% endfor %}
                 </tr>
-                {% for j in count %}
+                {% for spot_2 in spots %}
                 <tr>
-                    <th>{{spots[j-1][0]}}</th>
-                    {% for k in count %}
-                        {% if mapt[j-1][k-1][0] == -1 %}
+                    <th>{{spot_2.name}}</th>
+                    {% for spot_3 in spots %}
+                        {% if spot_3.id not in spot_2.paths%}
                         <td>-</td>
                         {% else %}
                         <td>
-                            {{ mapt[j-1][k-1][0] }}米
+                            {{ spot_2.paths[spot_3.id] }}米
                             <br>
-                            <a href="{{ url_for('admin_delete_path', i=spots[j-1][1], j=spots[k-1][1]) }}">删除</a>
+                            <a href="{{ url_for('admin_delete_path', i=spot_2.id, j=spot_3.id) }}">删除</a>
                         </td>
                         {% endif %}
                     {% endfor %}
@@ -75,13 +71,13 @@
                 从
                 <select name="spot1" id="">
                     {% for spot in spots %}
-                    <option value="{{spot[1]}}">{{spot[0]}}</option>
+                    <option value="{{spot.id}}">{{spot.name}}</option>
                     {% endfor %}
                 </select>
                 到
                 <select name="spot2" id="">
                     {% for spot in spots %}
-                    <option value="{{spot[1]}}">{{spot[0]}}</option>
+                    <option value="{{spot.id}}">{{spot.name}}</option>
                     {% endfor %}
                 </select>
                 <br>

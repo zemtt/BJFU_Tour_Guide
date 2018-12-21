@@ -17,12 +17,25 @@
         <h3 style="text-align: center">参观指南</h3>
     </div>
     <div align="center" name="search_body" border="1">
-        <form action="{{url_for('name_search')}}" method="post">
-            <div>
-                <input type="text" name="name">
-                <input type="submit" value="名称搜索">
-            </div>
-        </form>
+        <h4>景点</h4>
+        <table border="1" style="text-align: center">
+            <tr>
+                <th style="width:200px;">景点名称</th>
+                <th>-</th>
+            </tr>
+            {% for spot in spots %}
+            <tr>
+                <td>
+                    {{ spot.name }}
+                </td>
+                <td>
+                    <a href="{{ url_for('spot', i = spot.id) }}"><button>点击查看</button></a>
+                </td>
+            </tr>
+            </form>
+            {% endfor %}
+        </table>
+        <br>
     </div>
     <div align="center" name="search_body" border="1">
         <form action="{{url_for('func_search')}}" method="post">
@@ -38,14 +51,14 @@
                 <P>
                     从
                     <select>
-                        <option value ="volvo">图书馆</option>
-                        <option value ="saab">二教</option>
-                        <option value="opel">学研大厦</option>
+                        {% for spot in spots %}
+                        <option value="{{spot.id}}">{{ spot.name }}</option>
+                        {% endfor %}
                     </select>
                     到
                     <select>
-                        <option value ="volvo">图书馆</option>
-                        <option value ="saab">二教</option>
+                        <option value="volvo">图书馆</option>
+                        <option value="saab">二教</option>
                         <option value="opel">学研大厦</option>
                     </select>
                     <input type="submit" value="路径搜索">

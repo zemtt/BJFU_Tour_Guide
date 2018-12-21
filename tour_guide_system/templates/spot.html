@@ -27,10 +27,8 @@
         <img src="/static/{{ data.id }}.png" alt="" width="400px">
     </div>
     <div>
-        <h4>功能：|
-        {% for f in data.func  %}
-        {{ f }} |
-        {% endfor %}
+        <h4>功能：
+        {{ data.func }}
         </h4>
     </div>
     <a href="{{ url_for('index') }}">返回</a>
