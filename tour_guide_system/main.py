@@ -58,11 +58,14 @@ def func_search():
 # 路径搜索页面
 @app.route('/path_search', methods = ['POST'])
 def path_search():
-    i, j = request.form['i'], request.form['j']
-    Min_path = Dijkstra(MyData.spots, i, j, MyData.get_dist)
-    All_paths = CountAllPath(MyData.spots, i, j)
-    return render_template('paths.html', spots = MyData.spots, Min_path = Min_path, All_paths = All_paths, i=i, j=j)
-        
+    try:
+        i, j = request.form['i'], request.form['j']
+        Min_path = Dijkstra(MyData.spots, i, j, MyData.get_dist)
+        All_paths = CountAllPath(MyData.spots, i, j)
+        return render_template('paths.html', spots = MyData.spots, Min_path = Min_path, All_paths = All_paths, i=i, j=j)
+    except:
+        return render_template('warning.html', info = u'没有此路径！', back = 'index')
+
 # 网线铺设页面
 @app.route('/net_work')
 def net_work():
